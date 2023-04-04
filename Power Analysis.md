@@ -572,7 +572,7 @@ After elaborating how to implement simulation based power analysis in Stata, let
 ### 4.1 Linear Model Simulation
 
 #### 4.1.1 Import Libraries
-
+First, let's import the libraries used for simulation based power analysis in Python which include numpy, pandas, LinearRegression, statsmodels.api, scipy and matplotlib.pyplot.
 ```python
 
 import random
@@ -588,13 +588,13 @@ import matplotlib.pyplot as plt
 ```
 
 #### 4.1.2 Setting Seeds
-
+Set the seed to 1024.
 ```python
 np.random.seed(1024)
 ```
 
 #### 4.1.3 Setting Parameters
-
+Here, we use the same regression model as the example from Stata.
 ```python
 def generate_dataset(sample_size, interact_coef):
     
@@ -619,7 +619,7 @@ def generate_dataset(sample_size, interact_coef):
 ```
 
 #### 4.1.4 Simulation
-
+Following the previous step, we run simulations in Python.
 ```python
 def cal_power(sample_size, interact_coef, simiu_cnt, alpha):
     
@@ -656,7 +656,7 @@ def cal_power(sample_size, interact_coef, simiu_cnt, alpha):
 ```
 
 #### 4.1.5 Results
-
+In this part, we export the results of the simulations which include two parts: a table and a graph showing the results from the simulations. It should be noted that the graph from Python simulation is a little bit different from that in Stata, and this is mainly caused by different simulation process within Stata and Python. 
 ```python
 result = []
 
@@ -731,7 +731,7 @@ plt.show()
 ### 4.2 Mixed Model Simulation
 
 #### 4.2.1 Import Libraires
-
+We import the same libraries as in section 4.1.
 ```python
 import random
 import numpy as np
@@ -746,14 +746,14 @@ import matplotlib.pyplot as plt
 ```
 
 #### 4.2.2  Setting Seeds
-
+Again, we set seed to 1024.
 ```python
 np.random.seed(1024)
 ​
 ```
 
 #### 4.2.3  Setting Parameters
-
+We set a fixed effect model here too that is similar to 3.2.1. Please refer to that section for the interpretation of the parameters.
 ```python
 def generate_dataset(sample_size, obser_cnt):
     
@@ -786,7 +786,7 @@ def generate_dataset(sample_size, obser_cnt):
 ```
 
 #### 4.2.4  Simulation
-
+Run simulations.
 ```python
 def cal_power(sample_size, obser_cnt, simiu_cnt, alpha):
     
@@ -823,7 +823,7 @@ def cal_power(sample_size, obser_cnt, simiu_cnt, alpha):
 ```
 
 #### 4.2.5  Results
-
+The last precedure is to export the results which contain a table and a graph. 
 ```python
 result = []
 
@@ -882,24 +882,24 @@ plt.show()
 ![](https://github.com/hlmshtj-dan/pigo/blob/main/8.png?raw=true)
 
 ## 5. Simulatiion-based Power Analysis in R
-
+After introducing simulation based power analysis in Stata and Python, we introduce how to do the same simulation in R. 
 ### 5.1 Linear Model Simulation
 
 #### 5.1.1 Import Library
-
+We mainly use lmtest and ggplot2 libraries in R.
 ```r
 library(lmtest)
 library(ggplot2)
 ```
 
 #### 5.1.2  Setting Seeds
-
+We set seed to 1024 as that in Python. 
 ```r
 set.seed(1024)
 ```
 
 #### 5.1.3 Simulation
-
+We run simulation based on a regression model exactly as that in Stata and Python simulations. 
 ```r
 sample_cnt <- c(400, 500, 600, 700)
 interact_coef <- c(0.2, 0.25, 0.3, 0.35, 0.4)
@@ -939,7 +939,7 @@ power_list
 ```
 
 #### 5.1.4 Output
-
+Here's the table from the simulation.
 ```r
 sample_cnt	interact_coef	power
 400	0.20	0.268
@@ -965,7 +965,7 @@ sample_cnt	interact_coef	power
 ```
 
 #### 5.1.5 Graph
-
+Here's the graph from the simulation. 
 ```r
 options(repr.plot.width = 15, repr.plot.height = 6)
 ggplot(power_list, aes(interact_coef, power, group = sample_cnt, color = sample_cnt)) + geom_line(aes(colour = sample_cnt)) + geom_point(size = 4) + ylim(0,1)
@@ -976,20 +976,20 @@ ggplot(power_list, aes(interact_coef, power, group = sample_cnt, color = sample_
 ### 5.2 Mixed Model Simulation
 
 #### 5.2.1 Import Library
-
+In mixed model simulation in R, we still use two libraries: lmtest and ggplot2.
 ```r
 library(lmtest)
 library(ggplot2)
 ```
 
 #### 5.2.2 Setting Seeds
-
+Set the seed to 1024.
 ```r
 set.seed(1024)
 ```
 
 #### 5.2.3 Simulation
-
+Run simualation of fixed effect model in R. 
 ```r
 sample_cnt <- c(100, 200, 300, 400, 500)
 obser_cnt <- c(5, 6)
@@ -1040,7 +1040,7 @@ power_list
 ```
 
 #### 5.2.4 Output
-
+THe table result for the mixed effect model in R.
 ```r
 obser	sample	power
 5	100	0.323
@@ -1057,7 +1057,7 @@ obser	sample	power
 ```
 
 #### 5.2.5 Graph
-
+The graph of the simulation result for fixed effect model in R.
 ```r
 options(repr.plot.width = 15, repr.plot.height = 6)
 ggplot(power_list, aes(sample, power, group = obser, color = obser)) + geom_line(aes(colour = obser)) + geom_point(size = 4) + ylim(0,1)
