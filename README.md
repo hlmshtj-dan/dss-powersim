@@ -19,41 +19,42 @@ Text for my subsubsection.
 This is a numbered list:
 
 1. Item 1
-  + sub-item1
-  + sub-item2
+
+* sub-item1
+* sub-item2
+
 2. Item 2
-  + sub-item1
-  + sub-item2
+
+* sub-item1
+* sub-item2
 
 This is an unnumbered list:
 
 * Item 1
-  + sub-item1
-  + sub-item2
+  * sub-item1
+  * sub-item2
 * Item 2
-  + sub-item1
-  + sub-item2
-
+  * sub-item1
+  * sub-item2
 
 ## Text emphasis
 
-We can emphasize text by using **bold** or *italics*
-
+We can emphasize text by using **bold** or _italics_
 
 ## Embedding code
 
 We can embed R code in blocks. The blocks can either be run (evaluated) or just printed:
 
-```{r-setup, eval=FALSE}
+```{r-setup,
 # install.packages('reticulate')
 library(reticulate)
 use_python("~/anaconda3/bin/python") # use anaconda python on Mac
 use_python("C:/Users/<username>/Anaconda3/python.exe") # use anaconda python on Windows
 ```
 
-We can also [embed Python code blocks within Rmarkdown](https://rstudio.github.io/reticulate/articles/r_markdown.html) using the `reticulate` package, once it is [installed](https://rstudio.github.io/reticulate/index.html).
+We can also [embed Python code blocks within Rmarkdown](https://rstudio.github.io/reticulate/articles/r\_markdown.html) using the `reticulate` package, once it is [installed](https://rstudio.github.io/reticulate/index.html).
 
-```{python, eval=FALSE}
+```{python,
 flights = pandas.read.csv('flights.csv')
 flights = flights[flights['dest'] == 'ORD']
 flights = flights.dropna()
