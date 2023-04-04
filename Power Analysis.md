@@ -10,20 +10,11 @@
 
 It is an important step to calculate statistical power in a research design. In a research design, we use statistical power to measure the probability that a null hypothesis is correctly rejected. Usually, researchers need to know the needed sample size to reject the null hypothesis at a given power level, while in other cases, people calculates the power when the sample size is fixed.
 
-
-
-cccccccc
-
-xxsddd
-
-
-xxvvcxv
-
 More often, in a randomized controlled trial with two groups, we can use a formula to calculate the needed sample size to reject the null hypothesis. We will use an example to show how we do this. For instance, when we plan to perform a test of a hypothesis comparing the proportions of successes of tossing coins of faces in two independent populations, we would list the following null and alternative hypothesis respectively: $$H_{0} :p_{1} =p_{2}$$ $$H_{1} :p_{1} \neq p_{2}$$
 
 where $ p\_{1} =p\_{2} $ are the proportions in the two populations for comparison. In order to make sure the test has a specific power, we can use the following formula to determine the sample sizes: $$N=2(\frac{z_{1-\frac{\alpha }{2} }+z_{1-\beta } }{ES} )^{2}$$
 
-Where $ n\_{i} $ is the sample size required in each group (i=1,2), $\alpha $ is the specific level of significance and $ z\_{1-\frac{\alpha }{2} } $ is the critical value corresponding to the significance level. $1-\beta $ is the selected power and $z\_{1-\beta } $ is the value from the standard normal distribution holding $1-\beta $ below it. ES is the effect size, defined as follows:  $$ES=\frac{|p_{1} =p_{2} |}{\sqrt{p(1-p)} }$$where $|p\_{1} =p\_{2} |$ is the absolute value of the proportions difference between the two groups holding under the alternative hypothesis, $ H\_{1} $, and p is the proportion by pooling the observations from the two comparison groups. &#x20;
+Where $ n\_{i} $ is the sample size required in each group (i=1,2), $\alpha $ is the specific level of significance and $ z\_{1-\frac{\alpha }{2} } $ is the critical value corresponding to the significance level. $1-\beta $ is the selected power and $z\_{1-\beta } $ is the value from the standard normal distribution holding $1-\beta $ below it. ES is the effect size, defined as follows: $$ES=\frac{|p_{1} =p_{2} |}{\sqrt{p(1-p)} }$$where $|p\_{1} =p\_{2} |$ is the absolute value of the proportions difference between the two groups holding under the alternative hypothesis, $ H\_{1} $, and p is the proportion by pooling the observations from the two comparison groups.
 
 In Stata, we use the following code to calculate the sample size needed to reject the null hypothesis that $ H\_{0} :p\_{1} =p\_{2} $ ($ H\_{1} :p\_{1} \neq p\_{2}$) given $\hat{p\_{1} } =0.2,\hat{p\_{2} } =0.6$ on different fixed power levels:
 
@@ -57,7 +48,7 @@ The power of a test is the probability of finding significance if the alternativ
 
 Nevertheless, formulas don’t always work out to calculate the needed sample size such as in complex study designs. In these cases, simulation based power analysis stand out. The basic idea is to simulate running the experiment many times and calculate the proportion of times we reject the null hypothesis. This proportion provides an estimate of power. Generating a dataset and running an analysis for the hypothesis test is part of the simulation. One thing to mention is that randomness is usually introduced into the process through the dataset generation.
 
-For example, say, the fixed power level is 95%, and you want to calculate the sample size on this level. You can take a “guess and check” method. With this method, firstly, you choose a sample size $ n\_{1} $ and run the simulation to estimate your power. If power is estimated to be lower than 95%, you need to select a new value  $ n\_{2} $ that is larger than  $ n\_{1} $ running the simulation again. Multiple procedures are repeated until the estimated power is roughly 95%.
+For example, say, the fixed power level is 95%, and you want to calculate the sample size on this level. You can take a “guess and check” method. With this method, firstly, you choose a sample size $ n\_{1} $ and run the simulation to estimate your power. If power is estimated to be lower than 95%, you need to select a new value $ n\_{2} $ that is larger than $ n\_{1} $ running the simulation again. Multiple procedures are repeated until the estimated power is roughly 95%.
 
 As the example shows in the introduction part, for multiple commonly used statistical tests, we can use Stata’s power commands to calculate power and needed sample size. However, for complex models, such as multilevel or mixed effect models, we need to use simulations to calculate power and the needed sample size. In these scenarios, we usually use the following procedures to perform power analysis:
 
