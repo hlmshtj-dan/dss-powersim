@@ -568,10 +568,10 @@ Two-sided test
 ![](https://github.com/hlmshtj-dan/pigo/blob/main/3.png?raw=true)
 
 ## 4. Simulatiion-based Power Analysis in Python
-
+After elaborating how to implement simulation based power analysis in Stata, let’s move to the codes in Python. 
 ### 4.1 Linear Model Simulation
 
-1. import libraries
+#### 4.1.1 Import Libraries
 
 ```python
 
@@ -587,13 +587,13 @@ import matplotlib.pyplot as plt
 
 ```
 
-2. set seeds
+#### 4.1.2 Setting Seeds
 
 ```python
 np.random.seed(1024)
 ```
 
-3. set parameters
+#### 4.1.3 Setting Parameters
 
 ```python
 def generate_dataset(sample_size, interact_coef):
@@ -618,7 +618,7 @@ def generate_dataset(sample_size, interact_coef):
     return data_set
 ```
 
-4. Simulation
+#### 4.1.4 Simulation
 
 ```python
 def cal_power(sample_size, interact_coef, simiu_cnt, alpha):
@@ -655,7 +655,7 @@ def cal_power(sample_size, interact_coef, simiu_cnt, alpha):
 
 ```
 
-5. Show results
+#### 4.1.5 Results
 
 ```python
 result = []
@@ -730,7 +730,7 @@ plt.show()
 
 ### 4.2 Mixed Model Simulation
 
-1. import libraires
+#### 4.2.1 Import Libraires
 
 ```python
 import random
@@ -745,14 +745,14 @@ import matplotlib.pyplot as plt
 ​
 ```
 
-2. set seeds
+#### 4.2.2  Setting Seeds
 
 ```python
 np.random.seed(1024)
 ​
 ```
 
-3. set parameters
+#### 4.2.3  Setting Parameters
 
 ```python
 def generate_dataset(sample_size, obser_cnt):
@@ -785,7 +785,7 @@ def generate_dataset(sample_size, obser_cnt):
 ​
 ```
 
-4. simulation
+#### 4.2.4  Simulation
 
 ```python
 def cal_power(sample_size, obser_cnt, simiu_cnt, alpha):
@@ -822,7 +822,7 @@ def cal_power(sample_size, obser_cnt, simiu_cnt, alpha):
 ​
 ```
 
-5. results
+#### 4.2.5  Results
 
 ```python
 result = []
@@ -885,20 +885,20 @@ plt.show()
 
 ### 5.1 Linear Model Simulation
 
-1. Import Library
+#### 5.1.1 Import Library
 
 ```r
 library(lmtest)
 library(ggplot2)
 ```
 
-2. set seeds
+#### 5.1.2  Setting Seeds
 
 ```r
 set.seed(1024)
 ```
 
-3. Simulation
+#### 5.1.3 Simulation
 
 ```r
 sample_cnt <- c(400, 500, 600, 700)
@@ -938,7 +938,7 @@ for (s in sample_cnt) {
 power_list
 ```
 
-4. Output
+#### 5.1.4 Output
 
 ```r
 sample_cnt	interact_coef	power
@@ -964,7 +964,7 @@ sample_cnt	interact_coef	power
 700	0.40	0.957
 ```
 
-5. Graph
+#### 5.1.5 Graph
 
 ```r
 options(repr.plot.width = 15, repr.plot.height = 6)
@@ -975,20 +975,20 @@ ggplot(power_list, aes(interact_coef, power, group = sample_cnt, color = sample_
 
 ### 5.2 Mixed Model Simulation
 
-1. Import Library
+#### 5.2.1 Import Library
 
 ```r
 library(lmtest)
 library(ggplot2)
 ```
 
-2. Set seeds
+#### 5.2.2 Setting Seeds
 
 ```r
 set.seed(1024)
 ```
 
-3. Simulation
+#### 5.2.3 Simulation
 
 ```r
 sample_cnt <- c(100, 200, 300, 400, 500)
@@ -1039,7 +1039,7 @@ for (s in sample_cnt){
 power_list
 ```
 
-4. Output
+#### 5.2.4 Output
 
 ```r
 obser	sample	power
@@ -1056,7 +1056,7 @@ obser	sample	power
 
 ```
 
-5. Graph
+#### 5.2.5 Graph
 
 ```r
 options(repr.plot.width = 15, repr.plot.height = 6)
