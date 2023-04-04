@@ -1,43 +1,34 @@
-# Simulation-Based Power Analysis
+# Power Analysis
 
-# Tutorial material from IQSS
+## Simulation-Based Power Analysis
 
+## Tutorial material from IQSS
 
-# 1. Introduction 
+## 1. Introduction
 
-## 1.1 Basic Concepts
+### 1.1 Basic Concepts
 
-It is an important step to calculate statistical power in a research design. In a research design, we use statistical power to measure the probability that a null hypothesis is correctly rejected. Usually, researchers need to know the needed sample size to reject the null hypothesis at a given power level, while in other cases, people calculates the power when the sample size is fixed. 
+It is an important step to calculate statistical power in a research design. In a research design, we use statistical power to measure the probability that a null hypothesis is correctly rejected. Usually, researchers need to know the needed sample size to reject the null hypothesis at a given power level, while in other cases, people calculates the power when the sample size is fixed.
 
+More often, in a randomized controlled trial with two groups, we can use a formula to calculate the needed sample size to reject the null hypothesis. We will use an example to show how we do this. For instance, when we plan to perform a test of a hypothesis comparing the proportions of successes of tossing coins of faces in two independent populations, we would list the following null and alternative hypothesis respectively: $$H_{0} :p_{1} =p_{2}$$ $$H_{1} :p_{1} \neq p_{2}$$
 
-More often, in a randomized controlled trial with two groups, we can use a formula to calculate the needed sample size to reject the null hypothesis. We will use an example to show how we do this. For instance, when we plan to perform a test of a hypothesis comparing the proportions of successes of tossing coins of faces in two independent populations, we would list the following null and alternative hypothesis respectively:
-$$ H_{0} :p_{1} =p_{2} $$
-$$ H_{1} :p_{1} \neq p_{2} $$
+where $ p\_{1} =p\_{2} $ are the proportions in the two populations for comparison. In order to make sure the test has a specific power, we can use the following formula to determine the sample sizes: $$N=2(\frac{z_{1-\frac{\alpha }{2} }+z_{1-\beta } }{ES} )^{2}$$
 
-where $ p_{1} =p_{2} $ are the proportions in the two populations for comparison. In order to make sure the test has a specific power, we can use the following formula to determine the sample sizes:
-$$ N=2(\frac{z_{1-\frac{\alpha }{2} }+z_{1-\beta }  }{ES} )^{2} $$
+Where $ n\_{i} $ is the sample size required in each group (i=1,2), $\alpha $ is the specific level of significance and $ z\_{1-\frac{\alpha }{2} } $ is the critical value corresponding to the significance level. $1-\beta $ is the selected power and $z\_{1-\beta } $ is the value from the standard normal distribution holding $1-\beta $ below it. ES is the effect size, defined as follows:  $$ES=\frac{|p_{1} =p_{2} |}{\sqrt{p(1-p)} }$$where $|p\_{1} =p\_{2} |$ is the absolute value of the proportions difference between the two groups holding under the alternative hypothesis, $ H\_{1} $, and p is the proportion by pooling the observations from the two comparison groups. &#x20;
 
+In Stata, we use the following code to calculate the sample size needed to reject the null hypothesis that $ H\_{0} :p\_{1} =p\_{2} $ ($ H\_{1} :p\_{1} \neq p\_{2}$) given $\hat{p\_{1} } =0.2,\hat{p\_{2} } =0.6$ on different fixed power levels:
 
-Where $ n_{i} $ is the sample size required in each group (i=1,2), $\alpha $  is the specific level of significance and $ z_{1-\frac{\alpha }{2} }  $ is the critical value corresponding to the significance level. $1-\beta $ is the selected power and $z_{1-\beta } $ is the value from the standard normal distribution holding $1-\beta $ below it. ES is the effect size, defined as follows: 
-$$   ES=\frac{|p_{1} =p_{2} |}{\sqrt{p(1-p)} }  $$
-where $|p_{1} =p_{2} |$ is the absolute value of the proportions difference between the two groups holding under the alternative hypothesis, $ H_{1} $, and p is the proportion by pooling the observations from the two comparison groups.  
-
-In Stata, we use the following code to calculate the sample size needed to reject the null hypothesis that $ H_{0} :p_{1} =p_{2} $ ($ H_{1} :p_{1} \neq p_{2}$) given $\hat{p_{1} } =0.2,\hat{p_{2} } =0.6$ on different fixed power levels:
-
- ```stata
-    power twoproportions 0.2 0.6, n(40(20)100) graph
- ```
+```stata
+   power twoproportions 0.2 0.6, n(40(20)100) graph
+```
 
 ![](https://github.com/hlmshtj-dan/pigo/blob/main/4.png?raw=true)
 
-
-
-## 1.2 Procedures to perform power analysis
+### 1.2 Procedures to perform power analysis
 
 1. Specify a hypothesis test.
 
-
-Usually, there are several hypotheses in a research design, but for sample size calculation, make explicit a null and alternative hypothesis. 
+Usually, there are several hypotheses in a research design, but for sample size calculation, make explicit a null and alternative hypothesis.
 
 2. Specify the significance level of the test.
 
@@ -45,26 +36,21 @@ It is usually $\alpha$ = .05, but other values could be taken too.
 
 3. Get the values of the parameters necessary to compute the power function.
 
-
 To solve for sample size n, we need a value for standard deviation and other parameters. Need to note, sometimes we need to use a pilot dataset to get these values.
 
 4. Specify the intended power of the test.
 
 The power of a test is the probability of finding significance if the alternative hypothesis is true.
 
-5. Calculate the needed sample size for a fixed power level. 
+5. Calculate the needed sample size for a fixed power level.
 
-
-# 2. Power Analysis with simulation
+## 2. Power Analysis with simulation
 
 Nevertheless, formulas don’t always work out to calculate the needed sample size such as in complex study designs. In these cases, simulation based power analysis stand out. The basic idea is to simulate running the experiment many times and calculate the proportion of times we reject the null hypothesis. This proportion provides an estimate of power. Generating a dataset and running an analysis for the hypothesis test is part of the simulation. One thing to mention is that randomness is usually introduced into the process through the dataset generation.
 
+For example, say, the fixed power level is 95%, and you want to calculate the sample size on this level. You can take a “guess and check” method. With this method, firstly, you choose a sample size $ n\_{1} $ and run the simulation to estimate your power. If power is estimated to be lower than 95%, you need to select a new value  $ n\_{2} $ that is larger than  $ n\_{1} $ running the simulation again. Multiple procedures are repeated until the estimated power is roughly 95%.
 
-For example, say, the fixed power level is 95%, and you want to calculate the sample size on this level. You can take a “guess and check” method. With this method, firstly, you choose a sample size $ n_{1} $ and run the simulation to estimate your power. If power is estimated to be lower than 95%, you need to select a new value  $ n_{2} $ that is larger than  $ n_{1} $ running the simulation again. Multiple procedures are repeated until the estimated power is roughly 95%.
-
-
-
-As the example shows in the introduction part, for multiple commonly used statistical tests,  we can use Stata’s power commands to calculate power and needed sample size. However, for complex models, such as multilevel or mixed effect models, we need to use simulations to calculate power and the needed sample size. In these scenarios, we usually use the following procedures to perform power analysis:
+As the example shows in the introduction part, for multiple commonly used statistical tests, we can use Stata’s power commands to calculate power and needed sample size. However, for complex models, such as multilevel or mixed effect models, we need to use simulations to calculate power and the needed sample size. In these scenarios, we usually use the following procedures to perform power analysis:
 
 1.Write down the regression model of interest, including all parameters.
 
@@ -80,31 +66,21 @@ As the example shows in the introduction part, for multiple commonly used statis
 
 7.Write a program that you can use numlists for all parameters.
 
+## 3. Simulation-based Power Analysis in Stata
 
+### 3.1 Simple linear regression
 
+#### 3.1.1 Write down the regression model of interest, including all parameters.
 
-# 3. Simulation-based Power Analysis in Stata
+$$bpsystol =\beta _{0} +\beta _{1} (age)+\beta _{2} (sex )+\beta _{3} (age*sex )+\epsilon$$
 
-## 3.1 Simple linear regression
+where the variables of interest are age, sex and the interaction of age and sex. Also, you need to estimate the coefficients for $\beta\_{0}$, $\beta\_{1}$, $\beta\_{2}$, $\beta\_{3}$.
 
-### 3.1.1 Write down the regression model of interest, including all parameters.
-
-
-
-$$ bpsystol =\beta _{0} +\beta _{1} (age)+\beta _{2} (sex )+\beta _{3} (age*sex )+\epsilon  $$ 
-
-
-
-where the variables of interest are age, sex and the interaction of age and sex. Also, you need to estimate the coefficients for $\beta_{0}$, $\beta_{1}$, $\beta_{2}$, $\beta_{3}$.
-
-
-
-
-### 3.1.2 Specify the details of the covariates.
+#### 3.1.2 Specify the details of the covariates.
 
 You plan a study of systolic blood pressure (SBP) and you believe that there is an interaction between age and sex.
 
-### 3.1.3 Locate or think about reasonable values for the parameters in your model.
+#### 3.1.3 Locate or think about reasonable values for the parameters in your model.
 
 ```stata
 webuse nhanes2
@@ -139,11 +115,11 @@ t statistics in parentheses
 * p<0.1, ** p<0.05, *** p<0.01
 ```
 
-Using the data data from the National Health and Nutrition Examination Survey (NHANES), we can estimate $\beta_{0}$=110.6, $\beta_{1}$=0.47, $\beta_{2}$=-20.46, $\beta_{3}$=0.35.
+Using the data data from the National Health and Nutrition Examination Survey (NHANES), we can estimate $\beta\_{0}$=110.6, $\beta\_{1}$=0.47, $\beta\_{2}$=-20.46, $\beta\_{3}$=0.35.
 
-### 3.1.4 Simulate a single dataset assuming the alternative hypothesis, and fit the model.
+#### 3.1.4 Simulate a single dataset assuming the alternative hypothesis, and fit the model.
 
-Next, we create a simulated dataset based on our assumptions about the model under the alternative hypothesis. 
+Next, we create a simulated dataset based on our assumptions about the model under the alternative hypothesis.
 
 ```stata
 clear
@@ -156,10 +132,8 @@ generate e = rnormal(0,20)
 generate sbp = 110 + 0.5*age + (-20)*female + 0.35*interact  + e
 ```
 
-
-
-
 We can then test the null hypothesis that the interaction term equals zero using a likelihood-ratio test.
+
 ```stata
 regress sbp age i.female c.age#i.female
 estimates store full
@@ -169,7 +143,8 @@ estimates store reduced
 Likelihood-ratio test                                 LR chi2(1)  =      13.38
 (Assumption: reduced nested in full)                  Prob > chi2 =    0.0003
 ```
- The test yields a p-value of 0.0003.
+
+The test yields a p-value of 0.0003.
 
 ```stata
 return list
@@ -182,7 +157,8 @@ r(df) =  1
 local reject = (r(p)<0.05)
 
 ```
-### 3.1.5 Write a program to create the datasets, fit the models, and use simulate to test the program.
+
+#### 3.1.5 Write a program to create the datasets, fit the models, and use simulate to test the program.
 
 Next, let’s write a program that creates datasets under the alternative hypothesis.
 
@@ -219,6 +195,7 @@ program simregress, rclass
     return scalar reject = (r(p)<`alpha')
 end
 ```
+
 Below, we use simulate to run simregress 200 times and summarize the variable reject. The results indicate that we would have 74% power to detect an interaction parameter of 0.35 given a sample of 400 participants and the other assumptions about the model.
 
 ```stata
@@ -238,9 +215,9 @@ summarize reject
 
 ```
 
-### 3.1.6 Write a program called power_cmd_simregress, which allows you to run your simulations with power.
+#### 3.1.6 Write a program called power\_cmd\_simregress, which allows you to run your simulations with power.
 
-Next, let’s write a program called power_cmd_simregress so that we can integrate simregress into Stata’s power command.
+Next, let’s write a program called power\_cmd\_simregress so that we can integrate simregress into Stata’s power command.
 
 ```stata
 capture program drop power_cmd_simregress
@@ -274,9 +251,10 @@ program power_cmd_simregress, rclass
     return scalar esd = `esd'
 end
 ```
-### 3.1.7 Write a program called power_cmd_simregress_init.
 
- Run power simregress for a range of input parameter values, including the parameters listed in double quotes.
+#### 3.1.7 Write a program called power\_cmd\_simregress\_init.
+
+Run power simregress for a range of input parameter values, including the parameters listed in double quotes.
 
 ```stata
 capture program drop power_cmd_simregress_init
@@ -285,6 +263,7 @@ program power_cmd_simregress_init, sclass
     sreturn local pss_numopts  "intercept age female interact esd"
 end
 ```
+
 Now, we’re ready to use power simregress! The output below shows the simulated power when the interaction parameter equals 0.2 to 0.4 in increments of 0.05 for samples of size 400, 500, 600, and 700.
 
 ```stata
@@ -324,31 +303,29 @@ Two-sided test
 
 ```
 
+![](https://github.com/hlmshtj-dan/pigo/blob/main/5.png?raw=true)
 
+### 3.2 Mixed Effect models
 
-<img src="https://github.com/hlmshtj-dan/pigo/blob/main/5.png?raw=true" style="zoom:80%" />
+#### 3.2.1 Write down the regression model of interest, including all parameters.
 
-## 3.2  Mixed Effect models
+$$weight_{it} =\beta _{0} +\beta _{1} (age _{it} )+\beta _{2} (female _{i} )+\beta _{3} (age _{it} *female _{i} )+\mu _{0i}+\mu _{1i}(age)+\epsilon _{it}$$
 
-### 3.2.1 Write down the regression model of interest, including all parameters.
+where i stands for children, t for age, and we assume $\mu \_{0i}\sim N(0,\tau \_{0} )$, $\mu \_{1i}\sim N(0,\tau \_{1} )$, $\epsilon \_{it}\sim N(0,\sigma)$.
 
-$$ weight_{it} =\beta _{0} +\beta _{1} (age _{it} )+\beta _{2} (female _{i} )+\beta _{3} (age _{it} *female _{i} )+\mu _{0i}+\mu _{1i}(age)+\epsilon _{it}  $$ 
-
-where i stands for children, t for age, and we assume $\mu _{0i}\sim N(0,\tau _{0} )$, $\mu _{1i}\sim N(0,\tau _{1} )$, $\epsilon  _{it}\sim N(0,\sigma)$.
-
-The covariates are weight, age, female, and the interaction term age*female. Also, we need to estimate the coefficients for $\beta_{0}$ (Intercept), $\beta_{1}$ (Coefficient for age), $\beta_{2}$ (Coefficient for the female comparing with the male), $\beta_{3}$ (Coefficient for the interaction),$\mu _{1i}$ (randome effect of age).
+The covariates are weight, age, female, and the interaction term age\*female. Also, we need to estimate the coefficients for $\beta\_{0}$ (Intercept), $\beta\_{1}$ (Coefficient for age), $\beta\_{2}$ (Coefficient for the female comparing with the male), $\beta\_{3}$ (Coefficient for the interaction),$\mu \_{1i}$ (randome effect of age).
 
 We also need to think about the covariates in our model. This is a longitudinal study, so we need to specify the starting age, the length of time between measurements, and the total number of measurements. We also need to consider the proportion of males and females in our study. Are we likely to sample 50% females and 50% males?
 
 Let’s assume that we will measure the childrens’ weight every 6 months for 2 years beginning at age 12. And let’s also assume that the sample will be 50% female. The interaction term age×female is easy to calculate once we create variables for age and female.
 
-### 3.2.2 Specify the details of the covariates, such as the range of age or the proportion of females.
+#### 3.2.2 Specify the details of the covariates, such as the range of age or the proportion of females.
 
 Let’s assume that we will measure the children's weight every 4 months for 4 years beginning at age 10. Also, in the sample, the proportion of female is equal to that of male. It’s not difficult to calculate the iteration term when generate the variable for age and female.
 
-### 3.2.3 Locate or think about reasonable values for the parameters in your model.
+#### 3.2.3 Locate or think about reasonable values for the parameters in your model.
 
-In this step, we use an external data set measuring Asian kid’s data to estimate the coefficients for the above regression model, and we get  $\beta_{0}$=5.35, $\beta_{1}$=3.59, $\beta_{2}$=-0.47, $\beta_{3}$=-0.24,$\tau _{0} $=0.24,$\tau _{1} $ -0.57and $\sigma$=1.17.
+In this step, we use an external data set measuring Asian kid’s data to estimate the coefficients for the above regression model, and we get $\beta\_{0}$=5.35, $\beta\_{1}$=3.59, $\beta\_{2}$=-0.47, $\beta\_{3}$=-0.24,$\tau \_{0} $=0.24,$\tau \_{1} $ -0.57and $\sigma$=1.17.
 
 ```stata
 mixed weight c.age##i.girl || id: age, stddev
@@ -393,9 +370,9 @@ t statistics in parentheses
 * p<0.1, ** p<0.05, *** p<0.01
 ```
 
-### 3.2.4 Simulate a single dataset assuming the alternative hypothesis, and fit the model.
+#### 3.2.4 Simulate a single dataset assuming the alternative hypothesis, and fit the model.
 
-Next, we create a simulated dataset based on our assumptions about the model under the alternative hypothesis. We will simulate 5 observations at 4-month increments for 200 children. 
+Next, we create a simulated dataset based on our assumptions about the model under the alternative hypothesis. We will simulate 5 observations at 4-month increments for 200 children.
 
 ```stata
 set seed 16
@@ -412,6 +389,7 @@ generate e_ij = rnormal(0,1.2)
 generate weight = 5.35 + 3.6*age + (-0.5)*female + (-0.25)*interaction ///
     + u_0i + age*u_1i + e_ij
 ```
+
 Our dataset includes the random deviations that we would not observe in a real dataset. We can then use mixed to fit a model to our simulated data.
 
 ```stata
@@ -421,17 +399,19 @@ mixed weight age i.female || child: age , stddev nolog noheader
 estimates store reduced
 lrtest full reduced
 ```
+
 We can then test the null hypothesis that the interaction term equals zero using a likelihood-ratio test.
+
 ```stata
  lrtest full reduced
 
 Likelihood-ratio test                                 LR chi2(1)  =      8.23
 (Assumption: reduced nested in full)                  Prob > chi2 =    0.0041
 ```
+
 The p-value for our test is 0.0041, so we would reject the null hypothesis that the interaction term equals zero.
 
-
-### 3.2.5 Write a program to create the datasets, fit the models, and use simulate to test the program.
+#### 3.2.5 Write a program to create the datasets, fit the models, and use simulate to test the program.
 
 Next, let’s write a program that creates datasets under the alternative hypothesis, fits mixed models, tests the null hypothesis of interest, and uses simulate to run many iterations of the program.
 
@@ -480,6 +460,7 @@ program simmixed, rclass
     return scalar conv = `conv1'+`conv2'
 end
 ```
+
 We then use simulate to run simmixed 10 times using the default parameter values for 5 observations on each of 200 children.
 
 ```stata
@@ -496,9 +477,9 @@ Simulations (10)
 
 simulate saved the results of the hypothesis tests to a variable named reject. The mean of reject is our estimate of the power to test the null hypothesis that the age×sex interaction term equals zero, assuming that the weight of 200 children is measured 5 times.
 
-### 3.2.6 Write a program called power_cmd_mymethod, which allows you to run your simulations with power.
+#### 3.2.6 Write a program called power\_cmd\_mymethod, which allows you to run your simulations with power.
 
-We could stop with our quick simulation if we were interested only in a specific set of assumptions. But it’s easy to write an additional program named power_cmd_simmixed that will allow us to use Stata’s power command to create tables and graphs for a range of sample sizes.
+We could stop with our quick simulation if we were interested only in a specific set of assumptions. But it’s easy to write an additional program named power\_cmd\_simmixed that will allow us to use Stata’s power command to create tables and graphs for a range of sample sizes.
 
 ```stata
 capture program drop power_cmd_simmixed
@@ -540,9 +521,11 @@ program power_cmd_simmixed, rclass
     return scalar eij = `eij'
 end
 ```
-### 3.2.7 Write a program called power_cmd_mymethod_init so that you can use numlists for all parameters.
 
-It’s also easy to write a program named power_cmd_simmixed_init that will allow us to simulate power for a range of values for the parameters in our model.
+#### 3.2.7 Write a program called power\_cmd\_mymethod\_init so that you can use numlists for all parameters.
+
+It’s also easy to write a program named power\_cmd\_simmixed\_init that will allow us to simulate power for a range of values for the parameters in our model.
+
 ```stata
 capture program drop power_cmd_simmixed_init
 program power_cmd_simmixed_init, sclass
@@ -554,6 +537,7 @@ program power_cmd_simmixed_init, sclass
       sreturn local pss_numopts  "n1 intercept age female interact u0i u1i eij"
 end
 ```
+
 Now, we can use power simmixed to simulate power for a variety of assumptions. The example below simulates power for a range of sample sizes at both levels 1 and 2. Level 2 sample sizes range from 100 to 500 children in increments of 100. At level 1, we consider 5 and 6 observations per child.
 
 ```stata
@@ -581,15 +565,14 @@ Two-sided test
   +-------------------------+
 ```
 
-<img src="https://github.com/hlmshtj-dan/pigo/blob/main/3.png?raw=true" style="zoom:80%" />
+![](https://github.com/hlmshtj-dan/pigo/blob/main/3.png?raw=true)
 
+## 4. Simulatiion-based Power Analysis in Python
 
-# 4. Simulatiion-based Power Analysis in Python
-
-## 4.1 Linear Model Simulation
+### 4.1 Linear Model Simulation
 
 1. import libraries
-   
+
 ```python
 
 import random
@@ -603,11 +586,15 @@ import scipy
 import matplotlib.pyplot as plt
 
 ```
+
 2. set seeds
+
 ```python
 np.random.seed(1024)
 ```
+
 3. set parameters
+
 ```python
 def generate_dataset(sample_size, interact_coef):
     
@@ -630,7 +617,9 @@ def generate_dataset(sample_size, interact_coef):
     
     return data_set
 ```
+
 4. Simulation
+
 ```python
 def cal_power(sample_size, interact_coef, simiu_cnt, alpha):
     
@@ -665,7 +654,9 @@ def cal_power(sample_size, interact_coef, simiu_cnt, alpha):
     return [sample_size, interact_coef, mean_power]
 
 ```
+
 5. Show results
+
 ```python
 result = []
 
@@ -730,14 +721,17 @@ plt.show()
 ​
 ```
 
-<img src="https://github.com/hlmshtj-dan/pigo/blob/main/7.png?raw=true" style="zoom:80%" />
+![](https://github.com/hlmshtj-dan/pigo/blob/main/7.png?raw=true)
 
 ```python
 
 ​
 ```
-## 4.2  Mixed Model Simulation
+
+### 4.2 Mixed Model Simulation
+
 1. import libraires
+
 ```python
 import random
 import numpy as np
@@ -757,7 +751,9 @@ import matplotlib.pyplot as plt
 np.random.seed(1024)
 ​
 ```
+
 3. set parameters
+
 ```python
 def generate_dataset(sample_size, obser_cnt):
     
@@ -790,6 +786,7 @@ def generate_dataset(sample_size, obser_cnt):
 ```
 
 4. simulation
+
 ```python
 def cal_power(sample_size, obser_cnt, simiu_cnt, alpha):
     
@@ -826,6 +823,7 @@ def cal_power(sample_size, obser_cnt, simiu_cnt, alpha):
 ```
 
 5. results
+
 ```python
 result = []
 
@@ -881,28 +879,27 @@ plt.show()
 ​
 ```
 
+![](https://github.com/hlmshtj-dan/pigo/blob/main/8.png?raw=true)
 
+## 5. Simulatiion-based Power Analysis in R
 
-
-<img src="https://github.com/hlmshtj-dan/pigo/blob/main/8.png?raw=true" style="zoom:80%" />
-
-
-# 5. Simulatiion-based Power Analysis in R
-
-## 5.1 Linear Model Simulation
+### 5.1 Linear Model Simulation
 
 1. Import Library
-   
+
 ```r
 library(lmtest)
 library(ggplot2)
 ```
+
 2. set seeds
-   
+
 ```r
 set.seed(1024)
 ```
+
 3. Simulation
+
 ```r
 sample_cnt <- c(400, 500, 600, 700)
 interact_coef <- c(0.2, 0.25, 0.3, 0.35, 0.4)
@@ -940,8 +937,8 @@ for (s in sample_cnt) {
 
 power_list
 ```
-4. Output
 
+4. Output
 
 ```r
 sample_cnt	interact_coef	power
@@ -966,27 +963,33 @@ sample_cnt	interact_coef	power
 700	0.35	0.885
 700	0.40	0.957
 ```
+
 5. Graph
+
 ```r
 options(repr.plot.width = 15, repr.plot.height = 6)
 ggplot(power_list, aes(interact_coef, power, group = sample_cnt, color = sample_cnt)) + geom_line(aes(colour = sample_cnt)) + geom_point(size = 4) + ylim(0,1)
 ```
 
-<img src="https://github.com/hlmshtj-dan/pigo/blob/main/9.png?raw=true" style="zoom:80%" />
+![](https://github.com/hlmshtj-dan/pigo/blob/main/9.png?raw=true)
 
+### 5.2 Mixed Model Simulation
 
-
-## 5.2  Mixed Model Simulation
 1. Import Library
+
 ```r
 library(lmtest)
 library(ggplot2)
 ```
+
 2. Set seeds
+
 ```r
 set.seed(1024)
 ```
+
 3. Simulation
+
 ```r
 sample_cnt <- c(100, 200, 300, 400, 500)
 obser_cnt <- c(5, 6)
@@ -1035,6 +1038,7 @@ for (s in sample_cnt){
 
 power_list
 ```
+
 4. Output
 
 ```r
@@ -1053,8 +1057,10 @@ obser	sample	power
 ```
 
 5. Graph
+
 ```r
 options(repr.plot.width = 15, repr.plot.height = 6)
 ggplot(power_list, aes(sample, power, group = obser, color = obser)) + geom_line(aes(colour = obser)) + geom_point(size = 4) + ylim(0,1)
 ```
-<img src="https://github.com/hlmshtj-dan/pigo/blob/main/10.png?raw=true" style="zoom:80%" />
+
+![](https://github.com/hlmshtj-dan/pigo/blob/main/10.png?raw=true)

@@ -1,34 +1,62 @@
-# A template for DSS team tutorials and workshops
-![](https://travis-ci.org/IQSS/dss-template.svg?branch=master) [![Github All Releases](https://img.shields.io/github/downloads/IQSS/dss-template/total.svg)]()
+# This is a section
 
-## Media
-View this tutorial/workshop via a:
-* [browser](https://iqss.github.io/dss-template/)
-* [PDF](https://github.com/IQSS/dss-template/blob/gh-pages/template.pdf)
-* [EPUB](https://github.com/IQSS/dss-template/blob/gh-pages/template.epub)
-
-## Aim
-To provide a boilerplate repo to start a new tutorial/workshop.
-
-## Contents
-This repo contains boilerplate configuration files and Rmarkdown files necessary for creating a new tutorial/workshop. These files relate to:
-
-* bookdown: *index.Rmd, 01_chapter.Rmd, _bookdown.yml, _output.yml, _build.sh, preamble.tex, style.css, .nojekyll*
-* continuous integration: *.travis.yml, DESCRIPTION*
-* R: *dss-template.Rproj*
-* GitHub: *LICENSE*
-* Git: *.gitignore, template.gitignore*
-
-## Set-up
-1. Click on the green button **Use this template** to [create a new remote repo from this template](https://help.github.com/en/articles/creating-a-repository-from-a-template)
-2. Set up a continuous integration (CI) provider ([Travis CI](https://docs.travis-ci.com/user/tutorial/), or [AppVeyor](https://www.appveyor.com/docs/)). This involves:
-    + linking the CI provider to your GitHub account.
-    + creating a GutHub personal access token (e.g., 'GITHUB_PAT') and associate this with the repo within the CI provider.
-    + activating CI for the new remote repo.
-3. Clone the remote repo to a local directory.
-4. Add content to the Rmarkdown files locally. When this is pushed to the remote, the CI provider will build and deploy the GitHub pages website, pdf, and epub formats of the tutorial/workshop.
-
-## Contributing
-This material is maintained under a GPL License, and other individuals are welcome to fork, clone, or make copies of the material. Comments and suggestions are also always welcome.
+Here's how we embed an image:
 
 ![](images/readme-license.png)
+
+And here's how we embed a URL [DSS](https://dss.iq.harvard.edu/).
+
+## This is a subsection
+
+Text for my subsection.
+
+### This is a subsubsection
+
+Text for my subsubsection.
+
+## Lists
+
+This is a numbered list:
+
+1. Item 1
+  + sub-item1
+  + sub-item2
+2. Item 2
+  + sub-item1
+  + sub-item2
+
+This is an unnumbered list:
+
+* Item 1
+  + sub-item1
+  + sub-item2
+* Item 2
+  + sub-item1
+  + sub-item2
+
+
+## Text emphasis
+
+We can emphasize text by using **bold** or *italics*
+
+
+## Embedding code
+
+We can embed R code in blocks. The blocks can either be run (evaluated) or just printed:
+
+```{r-setup, eval=FALSE}
+# install.packages('reticulate')
+library(reticulate)
+use_python("~/anaconda3/bin/python") # use anaconda python on Mac
+use_python("C:/Users/<username>/Anaconda3/python.exe") # use anaconda python on Windows
+```
+
+We can also [embed Python code blocks within Rmarkdown](https://rstudio.github.io/reticulate/articles/r_markdown.html) using the `reticulate` package, once it is [installed](https://rstudio.github.io/reticulate/index.html).
+
+```{python, eval=FALSE}
+flights = pandas.read.csv('flights.csv')
+flights = flights[flights['dest'] == 'ORD']
+flights = flights.dropna()
+```
+
+Or we can format code inline (not evaluated): `print()`
