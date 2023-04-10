@@ -9,6 +9,7 @@ layout: post
 
 # Power Analysis
 
+
 ## Simulation-Based Power Analysis
 
 ## Tutorial material from IQSS
