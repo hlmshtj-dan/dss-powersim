@@ -1,16 +1,16 @@
 # Configurations
-title:            Test
-longtitle:        A Test Project For GitHub Pages
-author:           Lips7
-email:            f975793771@gmail.com
+title:            powersimu
+longtitle:        simulation
+author:           Dan-IQSS
+email:            tyuan1@iq.harvard.edu
 description: >
   A Test Project For GitHub Pages.
 
 version:          1.0
 gitbook_version:  3.2.3
 
-url:              'https://lips7.github.io'
-baseurl:          '/jekyll-gitbook'
+url:              'https://hlmshtj-dan.github.io'
+baseurl:          '/dss-powersim'
 rss:              RSS
 
 # bootstrap: use the remote theme for the site itself
