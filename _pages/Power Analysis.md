@@ -1,3 +1,12 @@
+---
+title: Power Analysis
+author: Dan
+date: 2023-04-10
+category: Post
+layout: post
+---
+
+
 # Power Analysis
 
 ## Simulation-Based Power Analysis
