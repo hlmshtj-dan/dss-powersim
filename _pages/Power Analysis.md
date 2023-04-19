@@ -337,6 +337,17 @@ Let’s assume that we will measure the children's weight every 4 months for 4 y
 
 In this step, we use an external data set measuring Asian kid’s data to estimate the coefficients for the above regression model, and we get $\beta\_{0}$=5.35, $\beta\_{1}$=3.59, $\beta\_{2}$=-0.47, $\beta\_{3}$=-0.24,$\tau \_{0} $=0.24,$\tau \_{1} $ -0.57and $\sigma$=1.17.
 
+To get the regresion results from the external data:
+
+```stata
+use "http://www.stata-press.com/data/r15/childweight.dta", clear 
+
+describe
+
+list in 1/5
+```
+
+
 ```stata
 mixed weight c.age##i.girl || id: age, stddev
 -----------------------
@@ -385,7 +396,7 @@ t statistics in parentheses
 Next, we create a simulated dataset based on our assumptions about the model under the alternative hypothesis. We will simulate 5 observations at 4-month increments for 200 children.
 
 ```stata
-set seed 16
+set seed 15
 clear
 set obs 200
 generate child = _n
@@ -420,6 +431,18 @@ Likelihood-ratio test                                 LR chi2(1)  =      8.23
 ```
 
 The p-value for our test is 0.0041, so we would reject the null hypothesis that the interaction term equals zero.
+
+```stata
+local alpha 0.05 
+mixed weight age i.female c.age#i.female || child: age, iter(200)
+local conv1 = e(converged)
+estimates store full
+mixed weight age i.female || child: age, iter(200)
+local conv2 = e(converged)
+estimates store reduced
+lrtest full reduced
+local reject = cond(`conv1'+`conv2'==2, r(p)<`alpha', .)
+```
 
 #### 3.2.5 Write a program to create the datasets, fit the models, and use simulate to test the program.
 
