@@ -1012,6 +1012,7 @@ ggplot(power_list, aes(interact_coef, power, group = sample_cnt, color = sample_
 In mixed model simulation in R, we still use two libraries: lmtest and ggplot2.
 ```r
 library(lmtest)
+library(lme4)
 library(ggplot2)
 ```
 
@@ -1057,11 +1058,23 @@ for (s in sample_cnt){
       data_set_expand$interact = data_set_expand$age * data_set_expand$female
       data_set_expand$weight = 5.35 + 3.6*data_set_expand$age + (-0.5)*data_set_expand$female + (-0.25)*data_set_expand$interact + data_set_expand$u_0i + data_set_expand$age*data_set_expand$u_1i + data_set_expand$e_ij
       
-      full_model = lm(data_set_expand$weight ~ data_set_expand$age + data_set_expand$female + data_set_expand$interact)
-      reduced_model = lm(data_set_expand$weight ~ data_set_expand$age + data_set_expand$female)
-      prob = lrtest(full_model, reduced_model)$Pr[2]
-      reject = ifelse((prob<=0.05), 1, 0)
-      results <- rbind(results, reject)     
+      full_model = lmer(weight ~ age + female + interact + (age|child), data = data_set_expand, REML = FALSE, 
+          control = lmerControl(optimizer ="Nelder_Mead"))
+      reduced_model = lmer(weight ~ age + female + (age|child), data = data_set_expand, REML = FALSE, 
+          control = lmerControl(optimizer ="Nelder_Mead"))
+      
+      if (!is.null(summary(full_model)$optinfo$conv$lme4$code)  | !is.null(summary(reduced_model)$optinfo$conv$lme4$code)){
+          
+          next
+          
+      } else {
+          
+          prob = lrtest(full_model, reduced_model)$Pr[2]
+          reject = ifelse((prob<=0.05), 1, 0)
+          results <- rbind(results, reject)
+          
+      }
+           
     }
     
     power_list = rbind(power_list, data.frame(obser=o, sample=s, power=mean(results)))
@@ -1076,17 +1089,16 @@ power_list
 THe table result for the mixed effect model in R.
 ```r
 obser	sample	power
-5	100	0.323
-6	100	0.401
-5	200	0.505
-6	200	0.651
-5	300	0.680
-6	300	0.815
-5	400	0.780
-6	400	0.897
-5	500	0.845
-6	500	0.951
-
+5	100	0.2320086
+6	100	0.3311897
+5	200	0.4463519
+6	200	0.5483871
+5	300	0.6222944
+6	300	0.7600000
+5	400	0.7208068
+6	400	0.8316498
+5	500	0.8177921
+6	500	0.9124169
 ```
 
 #### 5.2.5 Graph
