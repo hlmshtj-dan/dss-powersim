@@ -770,49 +770,46 @@ import random
 import numpy as np
 import pandas as pd
 
-from sklearn.linear_model import LinearRegression
 import statsmodels.api as sm
+import statsmodels.formula.api as smf
+from statsmodels.tools.sm_exceptions import ConvergenceWarning
 import scipy
 
 import matplotlib.pyplot as plt
-​
+import warnings
 ```
 
 #### 4.2.2  Setting Seeds
 Again, we set seed to 1024.
 ```python
 np.random.seed(1024)
+warnings.filterwarnings("error", category = ConvergenceWarning)
 ​
 ```
 
 #### 4.2.3  Setting Parameters
 We set a fixed effect model here too that is similar to 3.2.1. Please refer to that section for the interpretation of the parameters.
 ```python
-def generate_dataset(sample_size, obser_cnt):
+def generate_dataset(sample_size, obser_cnt, simiu_cnt):
     
-    data_set = []
+    female_origin = np.random.choice([0, 1], size=sample_size * simiu_cnt)
+    u_0i_origin = np.random.normal(0, 0.25, size=sample_size * simiu_cnt)
+    u_1i_origin = np.random.normal(0, 0.60, size=sample_size * simiu_cnt)
     
-    for i in range(sample_size):
-        child_id = i
-        female_origin = np.random.choice([0, 1])
-        u_0i_origin = np.random.normal(0, 0.25)
-        u_1i_origin = np.random.normal(0, 0.60)
-        
-        for j in range(obser_cnt):
-            
-            child = child_id
-            female = female_origin
-            age = 0.5*j
-            u_0i = u_0i_origin
-            u_1i = u_1i_origin
-            interaction = age * female
-            e_ij = np.random.normal(0, 1.2)
-            weight = 5.35 + 3.6*age + (-0.5)*female + (-0.25)*interaction + u_0i + age*u_1i + e_ij
-            
-            data_set.append([child, female, age, u_0i, u_1i, interaction, e_ij, weight])
-      
-    data_set = pd.DataFrame(data_set)
-    data_set.columns = ["child_id", "female", "age", "u_0i", "u_li", "interaction", "e_ij", "weight"]
+    age = np.tile(np.arange(0, obser_cnt*0.5, 0.5), sample_size * simiu_cnt)
+    child_id = np.tile(np.repeat(np.arange(sample_size),  obser_cnt), simiu_cnt)
+    female = np.repeat(female_origin, obser_cnt)
+    u_0i = np.repeat(u_0i_origin, obser_cnt)
+    u_1i = np.repeat(u_1i_origin, obser_cnt)
+    interaction = age * female
+    e_ij = np.random.normal(0, 1.2, size=sample_size * simiu_cnt * obser_cnt)
+    weight = 5.35 + 3.6 * age + (-0.5) * female + (-0.25) * interaction + u_0i + age * u_1i + e_ij
+    
+    data_set = pd.DataFrame({'child_id': child_id,
+                             'female': female,
+                             'age': age,
+                             'interaction': interaction,
+                             'weight': weight})
     
     return data_set
 ​
@@ -824,27 +821,22 @@ Run simulations.
 def cal_power(sample_size, obser_cnt, simiu_cnt, alpha):
     
     power_list = []
-    
-    for i in range(simiu_cnt):
+    all_dataset = generate_dataset(sample_size, obser_cnt, simiu_cnt)
+
+    for i in range(simiu_cnt): 
+        dataset = all_dataset[i * sample_size * obser_cnt: (i + 1) * sample_size * obser_cnt]
+        try:
+            full_model = smf.mixedlm("weight ~ age + female + interaction", data = dataset, groups = dataset["child_id"], re_formula = "age").fit(maxiter = 200)
+            reduced_model = smf.mixedlm("weight ~ age + female", data = dataset, groups = dataset["child_id"], re_formula = "age").fit(maxiter = 200)
+        except ConvergenceWarning:
+            continue
         
-        dataset = generate_dataset(sample_size, obser_cnt)
-    
-        y1 = dataset['weight']
-        x1 = dataset[['female', 'age', 'interaction']]
-        x1 = sm.add_constant(x1)
-        full_model = sm.OLS(y1, x1).fit()
         full_ll = full_model.llf
-    
-        y2 = dataset['weight']
-        x2 = dataset[['female', 'age']]
-        x2 = sm.add_constant(x2)
-        reduced_model = sm.OLS(y2, x2).fit()
         reduced_ll = reduced_model.llf
-    
         LR_statistic = -2*(reduced_ll-full_ll)
         power = scipy.stats.chi2.sf(LR_statistic, 1)
         
-        if power<=alpha:
+        if power <= alpha:
             power_list.append(1)
         else:
             power_list.append(0)
